@@ -1,3 +1,4 @@
+from threading import Thread, Event, Lock
 import time
 
 
@@ -23,4 +24,4 @@ class Timer:
 
         self.elapsed_time = time.perf_counter() - self._start_time
         self._start_time = None
-        return  self.elapsed_time
+        return self.elapsed_time

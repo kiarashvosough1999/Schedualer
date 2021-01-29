@@ -1,3 +1,5 @@
+from threading import Lock
+
 
 class Resource:
 
@@ -5,6 +7,7 @@ class Resource:
         self.name = name
         self.count = count
         self.in_use = 0
+        self.lock = Lock()
 
     def set_count(self, count):
         self.count = count
