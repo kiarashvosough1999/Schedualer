@@ -7,38 +7,33 @@ class SJF(BaseScheduler):
         super().__init__()
 
     def add_to_ready(self):
+        for task in self.ready_queue:
+            task.acquire_lock_for_resourses()
+            self.check_and_add_task_to_cpus(task)
+            task.release_lock_for_resourses()
 
-        for item in self.ready_queue:
-            if item.is_resources_available():
-                if self.core1.executing_task_id == -1:
-                    self.core1.add_task(item)
-                elif self.core2.executing_task_id == -1:
-                    self.core2.add_task(item)
-                elif self.core3.executing_task_id == -1:
-                    self.core3.add_task(item)
-            else:
-                self.waiting_queue.append(item)
         self.ready_queue = []
 
     def add_from_waiting(self):
-        list = []
-        for i in range(len(self.waiting_queue)):
-            if self.waiting_queue[i].is_resources_available():
-                self.ready_queue.append(self.waiting_queue[i])
-                list.append(self.waiting_queue[i])
+        temp_list = []
 
-        for item in list:
+        for task in self.waiting_queue:
+            task.acquire_lock_for_resourses()
+            if task.is_resources_available():
+                self.ready_queue.append(task)
+                temp_list.append(task)
+            task.release_lock_for_resourses()
+
+        for item in temp_list:
             self.waiting_queue.remove(item)
-
 
     def start(self):
         self.sort_by_burstTime()
+        self.print_task()
         while self.ready_queue or self.waiting_queue:
             self.add_from_waiting()
 
             self.add_to_ready()
-
-
 
     def sort_by_burstTime(self):
         low = 0

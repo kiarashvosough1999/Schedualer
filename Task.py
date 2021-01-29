@@ -19,5 +19,13 @@ class Task:
                 return False
         return True
 
+    def acquire_lock_for_resourses(self):
+        self.needed_resources[0].lock.acquire()
+        self.needed_resources[1].lock.acquire()
+
+    def release_lock_for_resourses(self):
+        self.needed_resources[1].lock.release()
+        self.needed_resources[0].lock.release()
+
     def __str__(self):
-        return  self.name
+        return self.name

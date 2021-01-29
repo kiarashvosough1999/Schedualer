@@ -46,6 +46,4 @@ def get_tasks():
 
 if __name__ == '__main__':
     get_resourses()
-    # print(resourse_A.count)
     get_tasks()
-    # core1.add_task(Task(45, "my", 1, State.running, 5, 3, None))
