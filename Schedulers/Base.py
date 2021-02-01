@@ -6,9 +6,13 @@ from time import sleep
 from CPU.CPUCore import CPUCore
 
 
+
 class BaseScheduler(ABC):
 
+
     def __init__(self):
+        self.order = []
+        self.order_first = []
         self.waiting_queue = deque([])
         self.ready_queue = deque([])
         self.core1 = CPUCore("core 1")
@@ -40,6 +44,8 @@ class BaseScheduler(ABC):
             print(self.core1.get_idle_time())
             print(self.core2.get_idle_time())
             print(self.core3.get_idle_time())
+            print(self.order_first)
+            print(self.order)
 
     @classmethod
     def add_to_ready(cls):
@@ -57,9 +63,12 @@ class BaseScheduler(ABC):
         if task.is_resources_available():
             if self.core1.executing_task_id == -1:
                 self.core1.add_task(task)
+                self.order.append(task.executing_time)
             elif self.core2.executing_task_id == -1:
                 self.core2.add_task(task)
+                self.order.append(task.executing_time)
             elif self.core3.executing_task_id == -1:
                 self.core3.add_task(task)
+                self.order.append(task.executing_time)
         else:
             self.waiting_queue.append(task)

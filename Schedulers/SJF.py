@@ -11,7 +11,6 @@ class SJF(BaseScheduler):
             task.acquire_lock_for_resourses()
             self.check_and_add_task_to_cpus(task)
             task.release_lock_for_resourses()
-
         self.ready_queue = []
 
     def add_from_waiting(self):
@@ -23,17 +22,21 @@ class SJF(BaseScheduler):
                 self.ready_queue.append(task)
                 temp_list.append(task)
             task.release_lock_for_resourses()
-
         for item in temp_list:
             self.waiting_queue.remove(item)
 
     def start(self):
         self.sort_by_burstTime()
+        self.order_first = [x.executing_time for x in self.ready_queue]
         self.print_task()
         while self.ready_queue or self.waiting_queue:
-            self.add_from_waiting()
+            if self.core1.executing_task_id == -1 and \
+                    self.core2.executing_task_id == -1 and \
+                    self.core3.executing_task_id == -1:
+                self.sort_by_burstTime()
+                self.add_from_waiting()
 
-            self.add_to_ready()
+                self.add_to_ready()
 
     def sort_by_burstTime(self):
         low = 0

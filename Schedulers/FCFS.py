@@ -27,6 +27,7 @@ class FCFS(BaseScheduler):
 
     def start(self):
         self.print_task()
+        self.order_first = [x.executing_time for x in self.ready_queue]
         while self.ready_queue or self.waiting_queue:
             self.add_from_waiting()
             self.add_to_ready()
