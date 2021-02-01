@@ -1,3 +1,5 @@
+import random
+
 from CPU.CPUCore import CPUCore
 from DataStructures.TaskState import Priority, State
 from Resourses.Resource import Resource
@@ -30,18 +32,20 @@ def get_resourses():
     resourse_B.set_count(int(b))
     resourse_C.set_count(int(c))
 
-
 def get_tasks():
     sjf = SJF()
-    count = input('enter number of task: ')
+    # count = input('enter number of task: ')
+    l = list(range(2, 8))
+    random.shuffle(l)
 
-    for i in range(int(count)):
-        name, type, time = input('enter name, type, time: ').split()
-        prio, res = get_prio(type)
-        task = Task(i, name, prio, State.ready, float(time), res)
+    for i in range(5):
+        # name, type, time = input('enter name, type, time: ').split()
+        prio, res = get_prio('X')
+        num = l.pop()
+        task = Task(i, 'task_' + str(i), prio, State.ready, float(num), res)
+        print('task_' + str(i), ' ', 'X', ' ', num)
         sjf.ready_queue.append(task)
     sjf.start()
-
 
 
 if __name__ == '__main__':

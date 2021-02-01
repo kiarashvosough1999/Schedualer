@@ -32,10 +32,11 @@ class CPUCore:
 
         # print(self.core_name + ' executing task with name: ' + task.name, end='\n')
         time.sleep(task.executing_time)
-        self.executing_task_id = -1
+
         self.idle_timer.start()
 
         task.acquire_lock_for_resourses()
+        self.executing_task_id = -1
         task.needed_resources[0].in_use -= 1
         task.needed_resources[1].in_use -= 1
         task.release_lock_for_resourses()
