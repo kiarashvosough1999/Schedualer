@@ -1,10 +1,11 @@
+from DataStructures.TaskState import State
 from Schedulers.Base import BaseScheduler
 
 
 class FCFS(BaseScheduler):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, core1, core2, core3, core4):
+        super().__init__(core1, core2, core3, core4)
 
     def add_to_ready(self):
         for task in self.ready_queue:
@@ -18,6 +19,7 @@ class FCFS(BaseScheduler):
         for i in range(len(self.waiting_queue)):
             self.waiting_queue[i].acquire_lock_for_resourses()
             if self.waiting_queue[i].is_resources_available():
+                self.waiting_queue[i].state = State.ready
                 self.ready_queue.append(self.waiting_queue[i])
                 list.append(self.waiting_queue[i])
             self.waiting_queue[i].release_lock_for_resourses()

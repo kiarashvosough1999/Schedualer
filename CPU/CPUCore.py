@@ -1,6 +1,7 @@
 import time
 from threading import Thread, Lock
 
+from DataStructures.TaskState import State
 from DataStructures.Timer import Timer
 
 
@@ -29,8 +30,13 @@ class CPUCore:
         single_thread.start()
 
     def runnable_task(self, task):
-
-        # print(self.core_name + ' executing task with name: ' + task.name, end='\n')
+        task.state = State.running
+        # print(self.core_name + ' executing task with name: ' +
+        #       task.name +
+        #       ' elapsed time is ' +
+        #       str(task.executing_time) +
+        #       ' HRRN ' + str(task.response_ratio)
+        #       , end='\n')
         time.sleep(task.executing_time)
 
         self.idle_timer.start()
@@ -40,6 +46,7 @@ class CPUCore:
         task.needed_resources[0].in_use -= 1
         task.needed_resources[1].in_use -= 1
         task.release_lock_for_resourses()
+        task.state = State.waiting
 
     def get_idle_time(self):
         return self.core_name + ' idle-time: ' + str(round(self.idle_time) + round(self.idle_timer.stop()))

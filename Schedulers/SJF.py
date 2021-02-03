@@ -1,10 +1,11 @@
+from DataStructures.TaskState import State
 from Schedulers.Base import BaseScheduler
 
 
 class SJF(BaseScheduler):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, core1, core2, core3, core4):
+        super().__init__(core1, core2, core3, core4)
 
     def add_to_ready(self):
         for task in self.ready_queue:
@@ -19,6 +20,7 @@ class SJF(BaseScheduler):
         for task in self.waiting_queue:
             task.acquire_lock_for_resourses()
             if task.is_resources_available():
+                task.state = State.ready
                 self.ready_queue.append(task)
                 temp_list.append(task)
             task.release_lock_for_resourses()
